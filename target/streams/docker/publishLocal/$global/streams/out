@@ -1,0 +1,68 @@
+[0m[[0mdebug[0m] [0mExecuting Native docker build --force-rm -t akka-cluster-sharding-scala:1.0 .[0m
+[0m[[0mdebug[0m] [0mWorking directory /home/ndeyeanna/Documents/akka/activator-akka-cluster-sharding-scala-master/target/docker/stage[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 557.1 kB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 1.114 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 1.671 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 2.228 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 2.785 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 3.342 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 3.899 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 4.456 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 5.014 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 5.571 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 6.128 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 6.685 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 7.242 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 7.799 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 8.356 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 8.913 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon  9.47 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 10.03 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 10.58 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 11.14 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon  11.7 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 12.26 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 12.81 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 13.37 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 13.93 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 14.48 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 15.04 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon  15.6 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 16.15 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 16.71 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 17.27 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 17.83 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 18.38 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon 18.94 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon  19.5 MB[0m
+[0m[[0minfo[0m] [0mSending build context to Docker daemon  19.8 MB[0m
+[0m[[0minfo[0m] [0mStep 1 : FROM java:latest[0m
+[0m[[0minfo[0m] [0m ---> 759d5a0d3218[0m
+[0m[[0minfo[0m] [0mStep 2 : WORKDIR /opt/docker[0m
+[0m[[0minfo[0m] [0m ---> Using cache[0m
+[0m[[0minfo[0m] [0m ---> 009ff4db9267[0m
+[0m[[0minfo[0m] [0mStep 3 : ADD opt /opt[0m
+[0m[[0minfo[0m] [0m ---> 1969c55645da[0m
+[0m[[0minfo[0m] [0mRemoving intermediate container 1f2f1c0649aa[0m
+[0m[[0minfo[0m] [0mStep 4 : RUN chown -R daemon:daemon .[0m
+[0m[[0minfo[0m] [0m ---> Running in 95cbb2c8d05a[0m
+[0m[[0minfo[0m] [0m ---> 366f514b6525[0m
+[0m[[0minfo[0m] [0mRemoving intermediate container 95cbb2c8d05a[0m
+[0m[[0minfo[0m] [0mStep 5 : USER daemon[0m
+[0m[[0minfo[0m] [0m ---> Running in 1d565045bab5[0m
+[0m[[0minfo[0m] [0m ---> d3b065dd0a6f[0m
+[0m[[0minfo[0m] [0mRemoving intermediate container 1d565045bab5[0m
+[0m[[0minfo[0m] [0mStep 6 : EXPOSE 0 2551 2552[0m
+[0m[[0minfo[0m] [0m ---> Running in b7f3126271b8[0m
+[0m[[0minfo[0m] [0m ---> 83a7110fb070[0m
+[0m[[0minfo[0m] [0mRemoving intermediate container b7f3126271b8[0m
+[0m[[0minfo[0m] [0mStep 7 : ENTRYPOINT bin/akka-cluster-sharding-scala[0m
+[0m[[0minfo[0m] [0m ---> Running in ee3f4d7d8c47[0m
+[0m[[0minfo[0m] [0m ---> 7d810d0e1043[0m
+[0m[[0minfo[0m] [0mRemoving intermediate container ee3f4d7d8c47[0m
+[0m[[0minfo[0m] [0mStep 8 : CMD [0m
+[0m[[0minfo[0m] [0m ---> Running in 2cfca2f84f30[0m
+[0m[[0minfo[0m] [0m ---> 969edf116ec7[0m
+[0m[[0minfo[0m] [0mRemoving intermediate container 2cfca2f84f30[0m
+[0m[[0minfo[0m] [0mSuccessfully built 969edf116ec7[0m
+[0m[[0minfo[0m] [0mBuilt image akka-cluster-sharding-scala:1.0[0m

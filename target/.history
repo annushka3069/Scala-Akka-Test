@@ -1,0 +1,20 @@
+eclipse
+?
+help
+reload
+eclipse
+reload
+docker:stage
+docker:publishLocal
+last docker:publishLocal
+exit
+docker:stage
+docker:publishLocal
+last docker:publishLocal
+exit
+docker:stage
+docker:publishLocal
+exit 
+docker:stage
+docker:publishLocal
+exit
