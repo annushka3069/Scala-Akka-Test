@@ -16,19 +16,20 @@ import akka.util.Timeout
 object BlogApp {
   def main(args: Array[String]): Unit = {
     if (args.isEmpty)
-      startup(Seq("2551", "2552", "0"))
+      startup(Seq("2551", "2552", "0")) //fonction startup prenant pour parametre une sequence de string definie plus loin, s'il n'y a pas d'argument, on la (la sequence) remplit par defaut avec les arguments listes ici
     else
-      startup(args)
+      startup(args)  //fonction startup prenant pour parametre une sequence de string definie plus loin, s'il ya des arguments, on les lui passe
   }
 
   def startup(ports: Seq[String]): Unit = {
-    ports foreach { port =>
+    ports foreach { port => //pour chaque port de la sequence, faire ce qui est compris dans les accolades {}
       // Override the configuration of the port
-      val config = ConfigFactory.parseString("akka.remote.netty.tcp.port=" + port).
-        withFallback(ConfigFactory.load())
+      val config = ConfigFactory.parseString("akka.remote.netty.tcp.port=" + port). //ici on utilise la methode pasreString de ConfigFactory, on analyse la chaine de caractere donnee en parametre et on en deduit une config, les methodes de configfactory ayant parse dans leurs noms creent juste une ConfigValue à partir d'une ressource
+        withFallback(ConfigFactory.load()) //laquelle config sera fusionne avec celle dans le configFactory.load car WithFallBack Retourne une nouvelle valeur obtenue en fusionnant la valeur en parametre avec l'autre appellante, avec les keys dans cette valeur l'emportant sur l'autre. l'operation withFallback est utilisee dans la bibliotheque pour fusionner des keys dupliquees dans le meme fichier et de fusionner plusieurs fichiers
+                                          //ConfigFactory.Load charge une configuration par defaut, elle est equivalente à load(defaultApplication()) dans la plupart des cas. ConfigFactory Contient les methodes statiques pour creer des instances de Config. Les methodes statiques avec "load" dans leur nom font des sortes d'operations de haut niveau en analysant eventuellement de multiple ressources et en resolvant les substitutions.
 
       // Create an Akka system
-      val system = ActorSystem("ClusterSystem", config)
+      val system = ActorSystem("ClusterSystem", config) //Utiliser ActorSystem va creer des acteurs top-level, supervises par l'acteur gardien fourni par le systeme d'acteur
 
       startupSharedJournal(system, startStore = (port == "2551"), path =
         ActorPath.fromString("akka.tcp://ClusterSystem@127.0.0.1:2551/user/store"))
