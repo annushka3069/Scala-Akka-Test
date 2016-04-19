@@ -1,6 +1,9 @@
 import com.typesafe.sbt.SbtMultiJvm
 import com.typesafe.sbt.SbtMultiJvm.MultiJvmKeys.MultiJvm
 
+enablePlugins(DockerPlugin)
+enablePlugins(JavaAppPackaging)
+
 val akkaVersion = "2.4.0"
 
 val project = Project(
@@ -39,6 +42,8 @@ val project = Project(
     }
   )
 ) configs (MultiJvm)
+dockerExposedPorts := Seq(2550, 2551, 2552)
+dockerEntrypoint in Docker := Seq("sh", "-c", "CLUSTER_IP=`/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1 }'` bin/akka-cluster-sharding-scala $*")
 
 
-fork in run := true
+

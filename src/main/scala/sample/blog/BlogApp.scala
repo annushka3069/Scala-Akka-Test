@@ -13,26 +13,61 @@ import akka.persistence.journal.leveldb.SharedLeveldbJournal
 import akka.persistence.journal.leveldb.SharedLeveldbStore
 import akka.util.Timeout
 
+
+import scala.collection.JavaConversions._
+import java.net.NetworkInterface
+
+object HostIP {
+
+  /**
+   * @return the ip adress if it's a local adress (172.16.xxx.xxx, 172.31.xxx.xxx , 192.168.xxx.xxx, 10.xxx.xxx.xxx)
+   */
+  def load(): Option[String] = {
+    val interfaces = NetworkInterface.getNetworkInterfaces()
+    val interface = interfaces find (_.getName equals "eth0")
+
+    interface flatMap { inet =>
+      // the docker adress should be siteLocal
+      inet.getInetAddresses find (_ isSiteLocalAddress) map (_ getHostAddress)
+    }
+  }
+}
+
+
 object BlogApp {
   def main(args: Array[String]): Unit = {
     if (args.isEmpty)
-      startup(Seq("2551", "2552", "0")) //fonction startup prenant pour parametre une sequence de string definie plus loin, s'il n'y a pas d'argument, on la (la sequence) remplit par defaut avec les arguments listes ici
+      startup(Seq("2551", "2552", "2550"))
     else
-      startup(args)  //fonction startup prenant pour parametre une sequence de string definie plus loin, s'il ya des arguments, on les lui passe
+      startup(args)
   }
 
   def startup(ports: Seq[String]): Unit = {
-    ports foreach { port => //pour chaque port de la sequence, faire ce qui est compris dans les accolades {}
-      // Override the configuration of the port
-      val config = ConfigFactory.parseString("akka.remote.netty.tcp.port=" + port). //ici on utilise la methode pasreString de ConfigFactory, on analyse la chaine de caractere donnee en parametre et on en deduit une config, les methodes de configfactory ayant parse dans leurs noms creent juste une ConfigValue à partir d'une ressource
-        withFallback(ConfigFactory.load()) //laquelle config sera fusionne avec celle dans le configFactory.load car WithFallBack Retourne une nouvelle valeur obtenue en fusionnant la valeur en parametre avec l'autre appellante, avec les keys dans cette valeur l'emportant sur l'autre. l'operation withFallback est utilisee dans la bibliotheque pour fusionner des keys dupliquees dans le meme fichier et de fusionner plusieurs fichiers
-                                          //ConfigFactory.Load charge une configuration par defaut, elle est equivalente à load(defaultApplication()) dans la plupart des cas. ConfigFactory Contient les methodes statiques pour creer des instances de Config. Les methodes statiques avec "load" dans leur nom font des sortes d'operations de haut niveau en analysant eventuellement de multiple ressources et en resolvant les substitutions.
+    ports foreach { port =>
+      // Override the configuration of the ip
+      val name = HostIP.load.get //config getString("clustering.ip")
+      println("\n\n ***********************: Adress IP : " + name )
+     
+    import com.typesafe.config.ConfigResolveOptions
+     val config = ConfigFactory.load(
+      getClass.getClassLoader,
+      ConfigResolveOptions.defaults.setAllowUnresolved(true)
+    )
+    val seedNodesString =s"clustering.ip=$name"
+// build the final config and resolve it
+    (ConfigFactory parseString seedNodesString)
+//      .withFallback(ConfigFactory parseResources configPath)
+      .withFallback(config)
+      .resolve
+
+
 
       // Create an Akka system
-      val system = ActorSystem("ClusterSystem", config) //Utiliser ActorSystem va creer des acteurs top-level, supervises par l'acteur gardien fourni par le systeme d'acteur
+      val system = ActorSystem("ClusterSystem", config)
 
-      startupSharedJournal(system, startStore = (port == "2551"), path =
-        ActorPath.fromString("akka.tcp://ClusterSystem@127.0.0.1:2551/user/store"))
+
+      startupSharedJournal(system, startStore = (port == s"$port"), path =
+        ActorPath.fromString(s"akka.tcp://ClusterSystem@$name:$port/user/store"))
 
       val authorListingRegion = ClusterSharding(system).start(
         typeName = AuthorListing.shardName,
@@ -47,7 +82,7 @@ object BlogApp {
         extractEntityId = Post.idExtractor,
         extractShardId = Post.shardResolver)
 
-      if (port != "2551" && port != "2552")
+      if (port != "2551" )
         system.actorOf(Props[Bot], "bot")
     }
 
@@ -76,4 +111,3 @@ object BlogApp {
   }
 
 }
-
